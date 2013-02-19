@@ -1,0 +1,8 @@
+#BlueJ class context
+comment0.params=n\ pf
+comment0.target=int\ calcWays(int,\ int)
+comment0.text=\r\n\ A\ recurrsive\ function\ to\ calculata\ the\ number\ of\ differnt\ ways\ to\ form\ change.\r\n\ \r\n\ @param\ n\ The\ amount\ to\ calculate\ change\ for\r\n\ @param\ pf\ The\ previous\ factor\ aka\ parent\ factor\r\n\ @return\ The\ number\ of\ ways\ to\ form\ change\r\n
+comment1.params=args
+comment1.target=void\ main(java.lang.String[])
+comment1.text=\r\n\ The\ main\ method\ for\ the\ program\r\n
+numComments=2
