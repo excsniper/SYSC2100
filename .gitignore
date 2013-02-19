@@ -1,2 +1,10 @@
-bin
-.metadata
+# Directories #
+bin/
+
+# Files #
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
