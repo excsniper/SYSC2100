@@ -1,40 +1,63 @@
 
 public class LinkedListPureStack implements PureStack
 {
-
+	
+	private int size;
+	private Node topNode;
+	
+	/**
+     * A private Node class for the linked list.
+     * This bit is salvaged from assignment 2.
+     */
+    private class Node
+    {
+        public Object elem;
+        public Node next;
+        
+        public Node(Object elem, Node next)
+        {
+            this.elem = elem;
+            this.next = next;
+        }
+    }
+    
+    public LinkedListPureStack()
+    {
+    	size = 0;
+    }
+    
 	@Override
 	public int size()
 	{
-		// TODO Auto-generated method stub
-		return 0;
+		return size;
 	}
 
 	@Override
 	public boolean isEmpty()
-	{
-		// TODO Auto-generated method stub
-		return false;
+	{		
+		return size == 0;
 	}
 
 	@Override
 	public void push(Object element)
 	{
-		// TODO Auto-generated method stub
-
+		topNode = new Node(element, topNode);
+		size++;
 	}
 
 	@Override
 	public Object pop()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		Node temp = topNode;
+		topNode = topNode.next;
+		size--;
+		return temp.elem;
 	}
 
 	@Override
 	public Object peek()
-	{
-		// TODO Auto-generated method stub
-		return null;
+	{		
+		return topNode.elem;
 	}
 
 }
