@@ -59,5 +59,23 @@ public class LinkedListPureStack implements PureStack
 	{		
 		return topNode.elem;
 	}
-
+	
+	public void clear()
+	{
+		topNode = null;
+		size = 0;
+	}
+	
+	public String toString()
+	{
+		String tempStr = "";
+		Node tempNode = topNode;
+		
+		for (int i=0; i<size; i++)
+		{
+			tempStr += tempNode.elem + " ";
+			tempNode = tempNode.next;
+		}
+		return tempStr;
+	}
 }
