@@ -13,68 +13,68 @@ public class StackChangeMain
 	private class Level
 	{
 		public int amount;
-		public int pf;
+		public int next;
 		
-		public Level(int amount, int pf)
+		public Level(int amount, int next)
 		{
 			this.amount = amount;
-			this.pf = pf;
+			this.next = next;
 		}
 		
 		public String toString()
 		{
-			return "[" + amount + ", " + pf + "]";
+			return "[" + amount + ", " + next + "]";
 		}
+	}
+	
+	private int getNext(int next)
+	{
+		if(next == 25)
+			return 10;
+		else
+			return 5;
 	}
 	
 	private int calcWays(int amount)
 	{
 		//stack of ints
 		LinkedListPureStack mystack = new LinkedListPureStack();
-		int sum = 0;		
-		int currentBranch = 5;
+		int sum = 0;
 		
-		mystack.push(new Level(amount, 25));
-		while(!mystack.isEmpty())	
-		{
-			Level tempLevel = (Level) mystack.peek();
-			if (tempLevel.amount < 5)
-				while(tempLevel.pf ==5)
-					mystack.pop();		
-			
-			if (tempLevel.amount > 25 && ((Level) mystack.peek()).pf >= 25)
+		mystack.push(new Level(amount, 25)); 	//start taking away 25 cents
+		while(true)	
+		{	
+			if( ((Level) mystack.peek()).amount < 5)
 			{
-				mystack.push(new Level(tempLevel.amount-25, 25));
-				continue;
-			}	
-			if (tempLevel.amount > 10 && ((Level) mystack.peek()).pf >= 10)
-			{
-				mystack.push(new Level(tempLevel.amount-10, 10));
-				continue;
-			}
-			if (tempLevel.amount > 5 && ((Level) mystack.peek()).pf >= 5)
-			{
-				mystack.push(new Level(tempLevel.amount-5, 5));
-				continue;
-			}
+				//System.out.println("------------------------------");
+				while( ((Level) mystack.peek()).next == 5)
+				{
+					mystack.pop();
+					if (mystack.isEmpty())
+						break;
+				}
 
+				if(!mystack.isEmpty())
+					((Level) mystack.peek()).next = getNext( ((Level) mystack.peek()).next);
+				else
+					break;
+			}
 			
-			System.out.println(mystack);
-			
-			sum++;	
-			 
-			
+			Level tempLevel = (Level) mystack.peek();
+			if(tempLevel.amount >= tempLevel.next)
+			{
+				mystack.push(new Level(tempLevel.amount-tempLevel.next, tempLevel.next));
+				sum++;
+			}
+			else
+			{
+				tempLevel.next = getNext(tempLevel.next);
+			}
+			//System.out.println(mystack);	
 			
 		}
 		
-
-		
-		
-		
-		
-		
-	
-		return sum + 1;                                                         
+		return sum + 1;
 	}
 	
 	/**
@@ -87,11 +87,11 @@ public class StackChangeMain
         Scanner myscanner = new Scanner(System.in);
         
         // A loop for multiple queries
-        //while(true)
+        while(true)
         {
             System.out.print("Enter a value to be calculated. To quit, enter 0: ");
             int input = myscanner.nextInt();
-            //if (input == 0) break; // user wants to end the program
+            if (input == 0) break; // user wants to end the program
             
             System.out.print("Number of ways that " + input + " can be changed into coins is " + mymain.calcWays(input) + ".\n\n"); // output results.
         }
