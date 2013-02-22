@@ -2,18 +2,16 @@ import java.util.*;
 
 public class StackChangeMain 
 {
+
 	/**
-	 * A method to calculate the amount of different ways to form change without recursion.
-	 * However, it will use stacks.
 	 * 
-	 * @param amount the amount to be calculated
-	 * @return number of ways
+	 * A private class to keep track of the params at each levels 
+	 *
 	 */
-	
 	private class Level
 	{
-		public int amount;
-		public int next;
+		public int amount;	//the amount to be calculated
+		public int next;	//the type of coin to take away in the next level
 		
 		public Level(int amount, int next)
 		{
@@ -21,60 +19,70 @@ public class StackChangeMain
 			this.next = next;
 		}
 		
+		//A toString method for debugging
 		public String toString()
 		{
 			return "[" + amount + ", " + next + "]";
 		}
 	}
 	
+	//A private method to move on to the next coin
 	private int getNext(int next)
 	{
 		if(next == 25)
 			return 10;
 		else
 			return 5;
-	}
+	}	
 	
+	/**
+	 * A method to calculate the amount of different ways to form change without recursion.
+	 * 
+	 * WARNING: This method does not take into consideration that the Canadian government no longer accepts pennies in their currency
+	 * 
+	 * @param amount the amount to be calculated
+	 * @return number of ways
+	 */
 	private int calcWays(int amount)
 	{
 		//stack of ints
 		LinkedListPureStack mystack = new LinkedListPureStack();
-		int sum = 0;
+		int sum = 0;	//keeps track of the number of ways
 		
 		mystack.push(new Level(amount, 25)); 	//start taking away 25 cents
-		while(true)	
+		while(true)		//This loop will be 'broken' in the middle 
 		{	
-			if( ((Level) mystack.peek()).amount < 5)
+			if( ((Level) mystack.peek()).amount < 5)	//if the amount at the moment is less than a nickel (5 cents)
 			{
-				//System.out.println("------------------------------");
-				while( ((Level) mystack.peek()).next == 5)
+				while( ((Level) mystack.peek()).next == 5)	//keep popping the stack until the next coin used for deduction
+															//is no longer a nickel
 				{
 					mystack.pop();
-					if (mystack.isEmpty())
+					if (mystack.isEmpty())					//the loop is done when the stack is empty
 						break;
 				}
 
-				if(!mystack.isEmpty())
+				if(!mystack.isEmpty())						//if the stack is not empty, change up the coins
 					((Level) mystack.peek()).next = getNext( ((Level) mystack.peek()).next);
 				else
 					break;
 			}
 			
 			Level tempLevel = (Level) mystack.peek();
-			if(tempLevel.amount >= tempLevel.next)
+			if(tempLevel.amount >= tempLevel.next)		//if the amount can be deducted by the coin...
 			{
-				mystack.push(new Level(tempLevel.amount-tempLevel.next, tempLevel.next));
-				sum++;
+				mystack.push(new Level(tempLevel.amount-tempLevel.next, tempLevel.next)); 	//do so and push it in the stack.
+				sum++;		//increase the counter for the number of ways.
 			}
 			else
 			{
-				tempLevel.next = getNext(tempLevel.next);
+				tempLevel.next = getNext(tempLevel.next);	//if the amount cannot be deducted, change up the coin
 			}
-			//System.out.println(mystack);	
+			//System.out.println(mystack);	USE TO DEBUG
 			
 		}
 		
-		return sum + 1;
+		return sum + 1;			//adding 1 to the sum accounts for the case where the change is made entirely out of pennies.
 	}
 	
 	/**
